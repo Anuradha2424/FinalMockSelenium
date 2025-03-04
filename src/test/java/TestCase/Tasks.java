@@ -53,9 +53,49 @@ public class Tasks extends DWSBase {
 			}
 	 }		
 	}
-	
 	@Test
 	public void testCase2() throws InterruptedException, IOException {
+		//verify the page by using url
+		 String expected_url="https://demowebshop.tricentis.com/";
+		 String actual_url=driver.getCurrentUrl();
+		 if(expected_url.equals(actual_url)) {
+		 Reporter.log("i am in dws",true);
+		 }
+		//click on digital download
+		DigitalDownload digi=new DigitalDownload(driver);
+		digi.DigiDLink();
+		//add all the product
+		List<WebElement> product = driver.findElements(By.xpath("//div[@class='add-info']/div[2]/input"));
+		for (WebElement web : product) {
+			web.click();
+			Thread.sleep(2000);	
+		}
+		digi.addCart();
+		List<WebElement> prices = driver.findElements(By.xpath("//td[@class='subtotal nobr end']/span[2]"));
+		List<WebElement> removeButton=driver.findElements(By.xpath("//td[@class='remove-from-cart']"));
+		
+		double highestPrice = 0.0;
+        int highestPriceIndex = -1;
+        // Identify the highest price and its index
+        for (int i = 0; i < prices.size(); i++) {
+            double price = Double.parseDouble(prices.get(i).getText());
+            if (price > highestPrice) {
+                highestPrice = price;
+                highestPriceIndex = i;
+            }
+        }        
+        // Remove the product with the highest price
+        if (highestPriceIndex != -1) {
+            removeButton.get(highestPriceIndex).click();
+            System.out.println("Removed the highest-priced product with price: " + highestPrice);
+            digi.updateCart();
+        } else {
+            System.out.println("No products found in the cart to remove.");
+        }
+	}
+	
+	@Test
+	public void testCase3() throws InterruptedException, IOException {
 		String name=ReadFromProperties1.getData("recipient-name");
 		String email=ReadFromProperties1.getData("recipient-email");
 		//click gift cart
