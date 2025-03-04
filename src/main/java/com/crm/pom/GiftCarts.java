@@ -7,8 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class DigitalDownload {
-	public DigitalDownload(WebDriver driver) {
+public class GiftCarts {
+	public GiftCarts(WebDriver driver) {
 		PageFactory.initElements(driver,this);
 	}	
 	
